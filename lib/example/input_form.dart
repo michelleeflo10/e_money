@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './intent_parameter.dart';
-import './main.dart';
+import '../main.dart';
 
 void main() {
   runApp(InputForm());
