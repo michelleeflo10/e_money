@@ -7,8 +7,8 @@ class Configuration extends InheritedWidget{
     Widget child,
   }) : super(key: key, child: child);
 
-//  String ip_public_alt = "203.142.77.243";
-  String ip_public = "203.142.77.243";
+  String ip_public = "192.168.10.213";
+//  String ip_public = "203.142.77.243";
   String ip_port = "80" ;
   String serverName = "EMoney";
   String apkName = "EMoney";

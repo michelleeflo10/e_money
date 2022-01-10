@@ -77,42 +77,42 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<EMoney> EMoneyList = [];
-  Future<List<EMoney>> cabangs;
+//  List<EMoney> EMoneyList = [];
+//  Future<List<EMoney>> cabangs;
 
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    cabangs = fetchCabang(http.Client());
-    FlutterNfcReader.onTagDiscovered().listen((onData) {
-      _showToast(context, onData.id);
-    });
+//    cabangs = fetchCabang(http.Client());
+//    FlutterNfcReader.onTagDiscovered().listen((onData) {
+//      _showToast(context, onData.id);
+//    });
   }
 
-  Future<void> startNFC() async {
-    NfcData response;
-    var _nfcData;
-
-    setState(() {
-      _nfcData = NfcData();
-      _nfcData.status = NFCStatus.reading;
-    });
-
-    print('NFC: Scan started');
-
-    try {
-      print('NFC: Scan readed NFC tag');
-      response = (await FlutterNfcReader.read) as NfcData;
-    } on PlatformException {
-      print('NFC: Scan stopped exception');
-    }
-    setState(() {
-      _nfcData = response;
-      print(_nfcData.toString());
-    });
-  }
+//  Future<void> startNFC() async {
+//    NfcData response;
+//    var _nfcData;
+//
+//    setState(() {
+//      _nfcData = NfcData();
+//      _nfcData.status = NFCStatus.reading;
+//    });
+//
+//    print('NFC: Scan started');
+//
+//    try {
+//      print('NFC: Scan readed NFC tag');
+//      response = (await FlutterNfcReader.read) as NfcData;
+//    } on PlatformException {
+//      print('NFC: Scan stopped exception');
+//    }
+//    setState(() {
+//      _nfcData = response;
+//      print(_nfcData.toString());
+//    });
+//  }
 
   int _currentIndex = 0;
 
@@ -135,9 +135,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget build(BuildContext context) {
-    void rfidBoarding(dynamic rfidId) {
-      print(rfidId);
-    }
+//    void rfidBoarding(dynamic rfidId) {
+//      print(rfidId);
+//    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: _pageOptions[_currentIndex],
@@ -149,11 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.pending),
+            icon: new Icon(Icons.input),
             title: new Text('INPUT'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.done),
+            icon: new Icon(Icons.search),
             title: new Text('SEARCH'),
           )
         ],
@@ -171,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content: Text(msg2+' - '+hextodec),
+        content: Text(msg2+' - '+hextodec+' halaman main'),
         action: SnackBarAction(
             label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
@@ -185,21 +185,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class PhotosList extends StatelessWidget {
-  final List<EMoney> photos;
-
-  PhotosList({Key key, this.photos}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: photos.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text((index+1<10?'0'+(index+1).toString():(index+1).toString())+'. ${photos[index].NomorSeri}'),
-        );
-      },
-    );
-  }
-}
+//class PhotosList extends StatelessWidget {
+//  final List<EMoney> photos;
+//
+//  PhotosList({Key key, this.photos}) : super(key: key);
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return ListView.builder(
+//      itemCount: photos.length,
+//      itemBuilder: (context, index) {
+//        return ListTile(
+//          title: Text((index+1<10?'0'+(index+1).toString():(index+1).toString())+'. ${photos[index].NomorSeri}'),
+//        );
+//      },
+//    );
+//  }
+//}
 

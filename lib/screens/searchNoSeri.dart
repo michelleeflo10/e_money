@@ -78,6 +78,9 @@ class _SearchNoSeriState extends State<SearchNoSeri> {
                 decoration: InputDecoration(
                   hintText: "Scan E-Money..",
                 ),
+                onChanged: (value) async{
+                  await getRequestHistoryList(_NomorRFID.text);
+                },
               ),
             ),
             Padding(
@@ -131,11 +134,16 @@ class _SearchNoSeriState extends State<SearchNoSeri> {
     emoneys = await EMoneyAPIs.searchNoSeri(context, rfid);
     print("ini orderlist : ");
     // print(emoneys[0].NomorSeri);
-    if(emoneys.length == 0){
-      _NomorSeri.text = "Tidak ditemukan";
+    if(rfid == ""){
+      _NomorSeri.clear();
     }else{
-      _NomorSeri.text = emoneys[0].NomorSeri;
+      if(emoneys.length == 0){
+        _NomorSeri.text = "Tidak ditemukan";
+      }else{
+        _NomorSeri.text = emoneys[0].NomorSeri;
+      }
     }
+
 
     setState(() {
       emoneys = emoneys;
