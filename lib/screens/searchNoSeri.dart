@@ -18,6 +18,7 @@ class _SearchNoSeriState extends State<SearchNoSeri> {
   @override
   void initState() {
     super.initState();
+
     FlutterNfcReader.onTagDiscovered().listen((onData) {
 //                          print(onData.id);
 //                          print(onData.content);
@@ -67,7 +68,7 @@ class _SearchNoSeriState extends State<SearchNoSeri> {
             // //   child: Text('Scan E-Money', style: size,),
             // ),
 
-            Text('Nomor RFID', textAlign: TextAlign.left),
+//            Text('Nomor RFID', textAlign: TextAlign.left),
             Padding(
               padding: const EdgeInsets.only(
                 left: 20,
@@ -77,30 +78,31 @@ class _SearchNoSeriState extends State<SearchNoSeri> {
                 controller: _NomorRFID,
                 decoration: InputDecoration(
                   hintText: "Scan E-Money..",
+                  labelText: "Nomor RFID",
+                  suffixIcon: IconButton(
+                    onPressed: _NomorRFID.clear,
+                    icon: Icon(Icons.clear),
+                  ),
                 ),
                 onChanged: (value) async{
-                  await getRequestHistoryList(_NomorRFID.text);
+                  await getRequestHistoryList(value);
                 },
+
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 50,
-                left: 20,
-                right: 20,
-              ),
-              child:
-              Text('Nomor Seri', textAlign: TextAlign.left),
             ),
 
             Padding(
               padding: const EdgeInsets.only(
+                top: 40,
                 left: 20,
                 right: 20,
               ),
               child: TextFormField(
                 controller: _NomorSeri,
                 enabled: false,
+                decoration: InputDecoration(
+                  labelText: "Nomor Seri"
+                ),
               ),
             ),
 
@@ -143,7 +145,6 @@ class _SearchNoSeriState extends State<SearchNoSeri> {
         _NomorSeri.text = emoneys[0].NomorSeri;
       }
     }
-
 
     setState(() {
       emoneys = emoneys;

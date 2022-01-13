@@ -9,6 +9,7 @@ import 'package:usb_serial/usb_serial.dart';
 import '../models/EMoneyModel.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
+import 'package:textfield_search/textfield_search.dart';
 
 
 class InputRFID extends StatefulWidget {
@@ -26,14 +27,10 @@ class _InputRFIDState extends State<InputRFID> {
   @override
   void initState() {
     super.initState();
-//    FlutterNfcReader.onTagDiscovered().listen((onData) {
-////                          print(onData.id);
-////                          print(onData.content);
-////                          print(onData.status);
-//      _showToast(context, onData.id);
-//    });
-    // emoneys = data.map((e) => EMoney().fromMap(e)).toList();
-
+//    _searchController.addListener(_printLatestValue);
+  }
+  _requestFocusRFID() {
+    FocusNomorRFID.requestFocus();
   }
 
   Future<void> startNFC() async {
@@ -96,7 +93,7 @@ class _InputRFIDState extends State<InputRFID> {
 
         _NomorRFID.clear();
         _NomorRFID.value = TextEditingValue(
-          text: event.toString()+' input rfid mmm',
+          text: event.toString()+' input rfid',
           selection: TextSelection.fromPosition(
             TextPosition(offset: event.toString().length),
           ),
@@ -112,87 +109,102 @@ class _InputRFIDState extends State<InputRFID> {
 
   List<EMoney> emoneys = [];
 
+  // mocking a future that returns List of Objects
+  Future<List> fetchComplexData() async {
+//    await Future.delayed(Duration(milliseconds: 1000));
+    List _list = new List();
+    List _jsonList = [];
+    for(int i =0; i < emoneys.length; i++){
+      print(emoneys[i].NomorSeri);
+      _jsonList.add(
+        {'label' : emoneys[i].NomorSeri.toString(), 'value': i}
+      );
+    }
+    for(int i = 0; i < _jsonList.length; i++){
+      _list.add(new TestItem.fromJson(_jsonList[i]));
+    }
+
+//    List _jsonList = [
+//      {'label': 'Text' + ' Item 1', 'value': 30},
+//      {'label': 'Text' + ' Item 2', 'value': 31},
+//      {'label': 'Text' + ' Item 3', 'value': 32},
+//    ];
+//    _list.add(new TestItem.fromJson(_jsonList[0]));
+//    _list.add(new TestItem.fromJson(_jsonList[1]));
+//    _list.add(new TestItem.fromJson(_jsonList[2]));
+
+    return _list;
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
     // List<String> emoneyList = showEMoneyList(config);
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: SearchField(
-//                searchStyle: TextStyle(
-//                  fontSize: 18,
-//                  color: Colors.black.withOpacity(0.8),
-//                ),
-//                searchInputDecoration:
-//                InputDecoration(
-//                  focusedBorder: OutlineInputBorder(
-//                    borderSide: BorderSide(
-//                      color: Colors.black.withOpacity(0.8),
-//                    ),
-//                  ),
-//                  border: OutlineInputBorder(
-//                    borderSide: BorderSide(color: Colors.red),
-//                  ),
-//                ),
-                suggestions: emoneys.map((e) => e.NomorSeri).toList(),
-                controller: _searchController,
-                hint: 'Input nomor seri...',
-                maxSuggestionsInViewPort: 4,
-                itemHeight: 45,
-                onTap: (x) {
-                  print(x);
-                  _NomorRFID.clear();
-                  FocusNomorRFID.requestFocus();
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 30,
-                left: 20,
-                right: 20,
-              ),
-              child: TextFormField(
-                focusNode: FocusNomorRFID,
-                decoration: InputDecoration(
-                  hintText: "Scan E-Money",
-                ),
-                controller: _NomorRFID,
-//                onChanged: (value) {
-////                  await
-//                  setState(() {
-//                    _NomorRFID.clear();
-//                    _NomorRFID.value = TextEditingValue(
-//                      text: value,
-//                      selection: TextSelection.fromPosition(
-//                        TextPosition(offset: value.toString().length),
-//                      ),
-//                    );
-//                  });
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Form(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+//              SizedBox(height: 16),
+//              TextFieldSearch(
+//                label: 'Nomor Seri',
+//                controller: _searchController,
+//                future: () {
+//                  return fetchComplexData();
 //                },
+//                initialList: emoneys.map((e) => e.NomorSeri).toList(),
+//                getSelectedValue: (item) {
+//                  _requestFocusRFID;
+//                  print("item");
+//
+//                },
+//              ),
+              TextFieldSearch(
+                initialList: emoneys.map((e) => e.NomorSeri).toList(),
+                label: "Nomor Seri",
+                controller: _searchController,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 30,
-                left: 20,
-                right: 20,
+              SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                ),
+                child: TextFormField(
+                  focusNode: FocusNomorRFID,
+                  decoration: InputDecoration(
+                    labelText: "Scan E-Money"
+                  ),
+                  controller: _NomorRFID,
+    //                onChanged: (value) {
+    ////                  await
+    //                  setState(() {
+    //                    _NomorRFID.clear();
+    //                    _NomorRFID.value = TextEditingValue(
+    //                      text: value,
+    //                      selection: TextSelection.fromPosition(
+    //                        TextPosition(offset: value.toString().length),
+    //                      ),
+    //                    );
+    //                  });
+    //                },
+                ),
               ),
-              child: ElevatedButton(
-                child: Text('Update'),
-                onPressed: () => updateRFID(),
-              ),
-            ),
-          ],
+//               Padding(
+//                padding: const EdgeInsets.only(
+//                  top: 30,
+//                  left: 40,
+//                  right: 40,
+//                ),
+//                child: ElevatedButton(
+//                  child: Text('Update'),
+//                  onPressed: () => updateRFID(),
+//                ),
+//              ),
+            ],
+          ),
         ),
       ),// This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -323,4 +335,15 @@ class _InputRFIDState extends State<InputRFID> {
     );
   }
 
+}
+
+class TestItem {
+  String label;
+  dynamic value;
+
+  TestItem({this.label, this.value});
+
+  factory TestItem.fromJson(Map<String, dynamic> json) {
+    return TestItem(label: json['label'], value: json['value']);
+  }
 }
